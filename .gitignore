@@ -1,0 +1,135 @@
+# ================================================
+# Blender MCP - Git Ignore Configuration
+# Version: 1.0.0
+# ================================================
+
+# ----------------------------------------
+# Python Bytecode & Cache
+# ----------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.importlinter_cache/
+.import_linter_cache/
+coverage.xml
+bandit-report.json
+
+# ----------------------------------------
+# Distribution / Packaging
+# ----------------------------------------
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+pip-wheel-metadata/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ----------------------------------------
+# Virtual Environments
+# ----------------------------------------
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# ----------------------------------------
+# IDE & Editor Files
+# ----------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+
+# ----------------------------------------
+# Blender Specific
+# ----------------------------------------
+*.blend
+*.blend1
+*.blend2
+*.blend3
+*.blend4
+*.blend5
+*.blend[0-9]*
+
+# ----------------------------------------
+# Release Packages
+# ----------------------------------------
+*.zip
+blender_mcp_v*.zip
+
+# ----------------------------------------
+# Logs & Temporary Files
+# ----------------------------------------
+*.log
+mcp_bridge.log
+blender_server_debug.log
+tmp/
+temp/
+.tmp/
+
+# ----------------------------------------
+# AI/Agent Artifacts
+# ----------------------------------------
+artifacts/
+.gemini/
+.claude/
+.cursor/
+.agent/
+docs/agent-kit/
+
+# ----------------------------------------
+# Secrets (NEVER commit these!)
+# ----------------------------------------
+*.key
+*.secret
+.env
+.env.local
+.env.*.local
+secrets.yaml
+secrets.json
+
+# ----------------------------------------
+# System Files
+# ----------------------------------------
+Thumbs.db
+.DS_Store
+*.lnk
+
+# ----------------------------------------
+# Test Outputs
+# ----------------------------------------
+test_outputs/
+test-results/
+screenshots/
+renders/
+exports/
+
+# ----------------------------------------
+# Documentation Build
+# ----------------------------------------
+docs/_build/
+site/

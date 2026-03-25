@@ -1,0 +1,381 @@
+[project]
+name = "blender_mcp"
+version = "1.0.0"
+description = "Blender Model Context Protocol (MCP) Server - High Mode"
+requires-python = ">=3.10"
+readme = { text = "Blender Model Context Protocol (MCP) Server package.", content-type = "text/plain" }
+authors = [
+  { name = "GÖKSEL ÖZKAN", email = "glonorce@github.com" },
+]
+license = { text = "Proprietary" }
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [ # For Integrations (Rodin, Hunyuan)
+ "jsonschema>=4.26.0",
+ "pydantic>=2.12.5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0",
+    "pytest-cov>=4.0",
+    "pytest-xdist>=3.0",      # Parallel test execution
+    "black>=26.1.0",
+    "ruff>=0.15.0",
+    "mypy>=1.19.1",
+    "pyright>=1.1.408",       # Microsoft's stricter type checker
+    "import-linter>=2.0",     # Architecture enforcement
+    "pip-audit>=2.0",         # Security vulnerability scanner
+    "fake-bpy-module-5.0",    # Blender API stubs for type checking
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["blender_mcp*"]
+
+# ============================================
+# BLACK - Code Formatter
+# ============================================
+[tool.black]
+line-length = 100
+target-version = ['py310']
+include = '''\.pyi?$'''
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | venv
+  | __pycache__
+  | build
+  | dist
+  | scripts
+)/
+'''
+
+# ============================================
+# RUFF - Fast Python Linter (IMPORT FORTRESS MODE)
+# ============================================
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+exclude = [
+    ".venv",
+    "venv",
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    "scripts",
+]
+
+[tool.ruff.lint]
+select = [
+    # Essential only - High Mode: Minimal restrictions
+    "E",      # pycodestyle errors
+    "F",      # Pyflakes (syntax errors, undefined names)
+    "I",      # isort (import sorting)
+    "W",      # pycodestyle warnings
+    
+    # High Mode: Security rules are INFO only, not blocking
+    # "S" rules disabled - we trust the user
+]
+
+ignore = [
+    # High Mode: Everything allowed that doesn't break code
+    "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107",  # Docstrings optional
+    "E501",     # Line length - who cares
+    "PLR2004",  # Magic values - freedom!
+    "PLR0913",  # Too many args - handlers need them
+    "PLR0915",  # Too many statements - complex workflows
+    "PLR0912",  # Too many branches - complex logic OK
+    "TRY003",   # Long messages - descriptive errors good
+    "EM101", "EM102",  # Exception messages - any format OK
+    "F821",     # Undefined names - bpy modules missing at check time
+    "INP001",   # Implicit namespace - works fine
+    "S101",     # Assert statements - allowed
+    "S102",     # Exec used - required for scripting
+    "S103",     # Bad file permissions - dev environment
+    "S105", "S106", "S107",  # Hardcoded passwords - test/dev OK
+    "S110",     # Try/except/pass - acceptable
+    "S112",     # Try/except/continue - acceptable
+    "S311",     # Random - not crypto
+    "S603",     # Subprocess without shell - OK
+    "S607",     # Starting process with partial path - OK
+    "S608",     # Hardcoded tmp - dev OK
+    "ERA001",   # Commented code - keeps history
+    "SIM",      # Simplifications - sometimes clarity > brevity
+    "ARG",      # Unused args - API compatibility
+    "RET",      # Return style - freedom
+    "SLF",      # Private access - High Mode
+    "FIX",      # FIXME/TODO markers - helpful
+    "E722",     # Bare except - acceptable for fallbacks
+    "I001",     # Import sorting - cosmetic
+    "UP",       # Python upgrade - not critical
+    "B",        # Bugbear - mostly style
+    "C4",       # Comprehensions - style
+    "N",        # Naming conventions - flexible
+    "A",        # Builtins shadowing - rare issue
+    "COM",      # Commas - cosmetic
+    "PIE",      # Pie rules - style
+    "PT",       # Pytest style - tests are tools
+    "Q",        # Quotes - cosmetic
+    "YTT",      # Python version checks - handled by us
+    "RUF",      # Ruff-specific - mostly style
+    "W",        # Warnings - not errors
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "F401",     # Unused imports (exports)
+    "F403",     # Star imports
+    "E402",     # Module level import not at top
+]
+"tests/**/*.py" = [
+    "D",        # Docstrings not required in tests
+    "S",        # Security checks (tests can use assert)
+    "PLR2004",  # Magic values allowed
+    "ARG001",   # Unused arguments (fixtures)
+    "INP001",   # Tests can be implicit packages
+]
+"**/handlers/*.py" = [
+    "PLR0912",  # Too many branches (handlers are complex)
+    "PLR0915",  # Too many statements
+    "S311",     # Standard pseudo-random generators (OK in handlers)
+    "TRY003",   # Long messages
+]
+"scripts/**/*" = [
+    "T201",     # Print allowed in scripts
+    "INP001",   # Scripts can be implicit packages
+    "F401",     # Unused imports (legacy code)
+    "F841",     # Unused variables (legacy code)
+    "E741",     # Ambiguous variable names (legacy code)
+]
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"bpy.types.SimpleNamespace" = { msg = "Use proper bpy.types classes instead of SimpleNamespace (Blender 5.x compatibility)" }
+"importlib.reload" = { msg = "Use blender_mcp.core.reliability.safe_reload instead" }
+"pickle" = { msg = "Use json or msgpack instead of pickle for security" }
+"subprocess.call" = { msg = "Use subprocess.run with check=True" }
+"os.system" = { msg = "Use subprocess instead of os.system" }
+"eval" = { msg = "NEVER use eval - major security risk" }
+"exec" = { msg = "NEVER use exec - major security risk" }
+"input" = { msg = "Use argparse or click for CLI input" }
+
+[tool.ruff.lint.flake8-import-conventions]
+[tool.ruff.lint.flake8-import-conventions.aliases]
+bpy = "bpy"
+bmesh = "bmesh"
+mathutils = "mu"  # Short alias
+
+[tool.ruff.lint.isort]
+known-first-party = ["blender_mcp"]
+known-third-party = ["bpy", "bmesh", "mathutils", "numpy"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+combine-as-imports = true
+split-on-trailing-comma = false
+lines-after-imports = 2
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+# ============================================
+# MYPY - Static Type Checker (Strict Mode)
+# ============================================
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false  # Global baseline: Loose (prevent noise)
+check_untyped_defs = true
+ignore_missing_imports = true
+strict_optional = false
+show_error_codes = true
+show_column_numbers = true
+pretty = true
+exclude = [
+    "tests/",
+    ".venv/",
+    "__pycache__/",
+    "scripts/",
+]
+
+
+[[tool.mypy.overrides]]
+module = "blender_mcp.handlers.*"
+disallow_untyped_defs = true
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "blender_mcp.core.*"
+disallow_untyped_defs = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+strict_optional = true
+
+
+
+
+
+# PYRIGHT - Microsoft's Type Checker (Even Stricter)
+# ============================================
+[tool.pyright]
+pythonVersion = "3.10"
+pythonPlatform = "All"
+typeCheckingMode = "off"  # High Mode: Type checking disabled (too many false positives)
+include = ["blender_mcp"]
+exclude = [
+    "tests",
+    "**/test_*",
+    ".venv",
+    "__pycache__",
+]
+
+# High Mode: Minimal type checking - Blender runtime is dynamic
+# All report* settings disabled to prevent noise
+reportMissingImports = "none"
+reportMissingTypeStubs = "none"
+reportGeneralTypeIssues = "none"
+reportPropertyTypeMismatch = "none"
+reportFunctionMemberAccess = "none"
+reportMissingTypeArgument = "none"
+reportInvalidTypeForm = "none"
+# reportWildcardImportsFromLibrary removed - not recognized by this pyright version
+reportUnusedImport = "none"
+reportUndefinedVariable = "none"  # High Mode: math, mathutils etc. are runtime-defined
+reportMissingModuleSource = "none"  # C-extension packages (psutil etc.) have no .py source
+reportUnusedExpression = "warning"
+
+# ============================================
+# PYTEST - Testing Framework (Paralel + Coverage)
+# ============================================
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--verbose",
+    "--tb=short",
+    "-rf",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "blender: marks tests requiring actual Blender runtime",
+    "handler: marks tests for handler modules",
+    "core: marks tests for core modules",
+    "security: marks security-related tests",
+    "performance: marks performance benchmark tests",
+]
+
+# ============================================
+# COVERAGE - Test Coverage
+# ============================================
+[tool.coverage.run]
+source = ["blender_mcp"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/.venv/*",
+    "*/handlers/__init__.py",  # Just imports
+]
+parallel = true  # For pytest-xdist compatibility
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "pass",  # Abstract methods
+    "...",  # Ellipsis
+]
+show_missing = true
+skip_covered = false
+fail_under = 70  # Increased from 60
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"
+
+# ============================================
+# CUSTOM QUALITY RULES (Blender MCP Specific)
+# ============================================
+[tool.blender_mcp.quality]
+# Version consistency check
+version_files = [
+    "blender_mcp/__version__.py",
+    "pyproject.toml",
+    "uv.lock",
+    "blender_mcp/dispatcher.py",
+]
+
+# Handler naming conventions
+handler_prefix = "manage_"
+handler_pattern = "^[a-z][a-z0-9_]*$"
+required_handler_files = [
+    "manage_scene",
+    "manage_modeling",
+    "manage_sculpting",
+    "manage_materials",
+    "manage_rendering",
+    "manage_animation",
+    "manage_physics",
+]
+
+# Required schema fields
+required_schema_fields = ["type", "properties", "required"]
+
+# Documentation requirements
+doc_required_handlers = true
+doc_min_length = 20
+
+# Forbidden patterns (regex)
+forbidden_patterns = [
+    "bpy\\.types\\.SimpleNamespace",  # Issue #11 fix
+    "export_scene\\.obj",            # Blender 5.x compatibility
+    "print\\s*\\(",                   # Use logging instead of print
+    "from blender_mcp",              # Use relative imports
+    "import blender_mcp",            # Use relative imports
+]
+
+# Required imports check (ensure core modules are imported properly)
+required_imports = [
+    "from ..dispatcher import register_handler",
+]
+
+# Security checks
+security_checks = [
+    "hardcoded_password",
+    "eval_usage",
+    "exec_usage",
+    "shell_injection",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+]

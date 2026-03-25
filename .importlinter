@@ -1,0 +1,15 @@
+[importlinter]
+root_package = blender_mcp
+include_external_packages = false
+
+[importlinter:contract:layering]
+name = Core and utils must remain below handlers
+type = layers
+containers =
+    blender_mcp
+layers =
+    handlers
+    utils
+    core
+ignore_imports =
+    blender_mcp.core.security -> blender_mcp
